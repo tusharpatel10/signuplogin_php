@@ -1,5 +1,6 @@
 <?php
 session_start();
+$insert = false;
 // Check if the user is already logged in, if not redirect to login page
 if (isset($_SESSION['username'])) {
     header("Location:welcome.php");
@@ -26,11 +27,11 @@ if (isset($_POST['submit'])) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $sql = "insert into users4(username,email,password) values('$username','$email','$hash')";
             $result = mysqli_query($conn, $sql);
-            echo "<div class='alert alert-primary' role='alert'><strong>Signup Successfully!</strong>...</div>";
+            $insert = true;
         } else {
             echo "<script>
             alert('Password and Confirm Password do not match');
-            window . location . href = 'signup.php'</>";
+            window.location.href = 'signup.php'</>";
         }
     } else {
         echo "<script>
@@ -47,17 +48,11 @@ if (isset($_POST['submit'])) {
     <title>Signup Page</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="style.css">
 
     <!-- Bootstrap CSS v5.2.1 -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-        crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 </head>
 
 <body>
@@ -70,6 +65,12 @@ if (isset($_POST['submit'])) {
         <div id="form">
             <h1 id="heading">Signup</h1>
             <hr color="black" width="100%">
+            <?php
+            if ($insert) {
+                echo "<div class='alert alert-success alert-dismissible fade show' role='alert'><strong>Signup Successfully!</strong> &nbsp your account has been Registered Successfully.<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+            }
+            ?>
             <form name="form" action="signup.php" method="post">
                 <label for="">Enter Username</label>
                 <input type="text" id="user" name="user" required><br><br>
